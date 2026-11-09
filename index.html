@@ -1,0 +1,60 @@
+!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>Точное время в Москве</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      padding: 24px; color: #f8fafc;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 50% 20%, #263b5b 0, #101827 55%, #090e18 100%);
+    }
+    main {
+      width: min(100%, 680px); text-align: center; padding: 48px 28px;
+      border: 1px solid rgba(255,255,255,.13); border-radius: 28px;
+      background: rgba(255,255,255,.055); box-shadow: 0 24px 80px rgba(0,0,0,.35);
+      backdrop-filter: blur(12px);
+    }
+    .eyebrow { color: #9fb4d3; text-transform: uppercase; letter-spacing: .18em; font-size: .8rem; }
+    h1 { margin: 14px 0 8px; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 600; }
+    #clock { margin: 28px 0 12px; font-size: clamp(3.5rem, 14vw, 7.5rem); font-weight: 700; letter-spacing: -.055em; font-variant-numeric: tabular-nums; line-height: 1; }
+    #date { color: #c4d0e0; font-size: clamp(1rem, 3vw, 1.25rem); }
+    .zone { display: inline-flex; gap: 8px; align-items: center; margin-top: 30px; padding: 10px 16px; border-radius: 999px; background: rgba(90,160,255,.13); color: #cfe2ff; font-size: .95rem; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #58d68d; box-shadow: 0 0 12px #58d68d; }
+    footer { margin-top: 30px; color: #8191a8; font-size: .82rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">Мировое время</div>
+    <h1>Сейчас в Москве</h1>
+    <div id="clock" role="timer" aria-live="off">--:--:--</div>
+    <div id="date">Загружаем дату…</div>
+    <div class="zone"><span class="dot"></span> Москва · UTC+3 (МСК)</div>
+    <footer>Время обновляется автоматически</footer>
+  </main>
+  <script>
+    const zone = "Europe/Moscow";
+    const clock = document.getElementById("clock");
+    const date = document.getElementById("date");
+    const timeFormatter = new Intl.DateTimeFormat("ru-RU", {
+      timeZone: zone, hour: "2-digit", minute: "2-digit", second: "2-digit",
+      hourCycle: "h23"
+    });
+    const dateFormatter = new Intl.DateTimeFormat("ru-RU", {
+      timeZone: zone, weekday: "long", day: "numeric", month: "long", year: "numeric"
+    });
+    function updateClock() {
+      const now = new Date();
+      clock.textContent = timeFormatter.format(now);
+      date.textContent = dateFormatter.format(now);
+    }
+    updateClock();
+    setInterval(updateClock, 250);
+  </script>
+</body>
+</html>
